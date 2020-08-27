@@ -58,6 +58,19 @@ class Controller{
       res.send(err)
     })
   }
+  static getSelectByCategory(req,res){
+    Item.findAll({
+      where:{
+        item_category: req.params.item_category
+      }
+    })
+    .then(data =>{
+      res.render('show-categories', { title: `Item List` , data})
+    })
+    .catch((err) =>{
+      res.send(err)
+    })
+  }
   static getCheckoutHandler(req,res){
     Cart.findAll({
       where:{
