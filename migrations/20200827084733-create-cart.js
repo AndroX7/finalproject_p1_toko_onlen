@@ -11,14 +11,14 @@ module.exports = {
       status_order: {
         type: Sequelize.STRING
       },
-      user_id: {
+      UserId: {
         type: Sequelize.INTEGER,
         references:{
           model: "Users",
           key:"id"
         }
       },
-      item_id: {
+      ItemId: {
         type: Sequelize.INTEGER,
         references:{
           model: "Items",

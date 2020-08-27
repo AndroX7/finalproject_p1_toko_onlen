@@ -13,20 +13,18 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Cart.belongsTo(models.User , {
         targetKey: "id",
-        foreignKey:"user_id"
+        foreignKey:"UserId"
       })
       Cart.belongsTo(models.Item , {
         targetKey: "id",
-        foreignKey:"item_id"
+        foreignKey:"ItemId"
       })
-    }
-      }
     }
   };
   Cart.init({
     status_order: DataTypes.STRING,
-    user_id: DataTypes.INTEGER,
-    item_id: DataTypes.INTEGER,
+    UserId: DataTypes.INTEGER,
+    ItemId: DataTypes.INTEGER,
     qty: DataTypes.INTEGER,
     total_price: DataTypes.BIGINT,
     address: DataTypes.TEXT

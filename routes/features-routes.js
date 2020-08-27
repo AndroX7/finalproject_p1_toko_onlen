@@ -1,12 +1,12 @@
 const express = require('express')
 const router = express.Router()
 
-const Controller = require('../controllers/index.js)
+const Controller = require('../controllers')
 
-router.get('/checkOut/:id',Controller.getCheckoutHandler)
-router.get('/buy',Controller.getBuyHandler)
-router.post('/buy',Controller.postBuyHandler)
+// router.get('/checkOut/:id',Controller.getCheckoutHandler)
+// router.get('/buy',Controller.getBuyHandler)
+// router.post('/buy',Controller.postBuyHandler)
 router.get('/orderList',Controller.getOrderListHandler)
-router.get('/cancelOrder/:id',Controller.getCancelOrder)
+// router.get('/cancelOrder/:id',Controller.getCancelOrder)
 
 module.exports = router

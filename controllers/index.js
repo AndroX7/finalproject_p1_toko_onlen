@@ -28,7 +28,21 @@ class Controller{
   static buyItem(req,res){
 
   }
-  static orderList(req,res){
-
+  static getOrderListHandler(req,res){
+    // res.send('hai hai')
+    Cart.findAll({
+      where:{
+        UserId: 1,
+        status_order: 'Confirmed'
+      },
+      include:Item
+    }).then((data) =>{
+      res.send(data)
+    })
+    .catch((err) =>[
+      res.send('err : ' + err)
+    ])
   }
 }
+
+module.exports = Controller

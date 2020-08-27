@@ -1,14 +1,13 @@
 const express = require('express')
-const port = 3003
+const port = 3005
 const app = express()
+
+const router = require('./routes')
 
 app.get('/product/',(req,res) =>{
   res.render('search/')
 })
-app.get('/',(req,res)=>{
-  console.log(JSON.stringify(req.query))
-  res.send(req.query)
-})
+app.use('/',router)
 
 app.listen(port , ()=>{
     console.log(`listening on port ${port}`)
