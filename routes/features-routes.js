@@ -9,4 +9,5 @@ router.get('/checkOut/:id',Controller.getCheckoutHandler)
 router.get('/orderList',Controller.getOrderListHandler)
 router.get('/cancelOrder/:id',Controller.getCancelOrder)
 router.get('/categories/:category',Controller.getSelectByCategory)
+
 module.exports = router
