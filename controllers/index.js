@@ -2,7 +2,7 @@ const { User, Cart, Item } = require('../models')
 const { Op } = require("sequelize");
 
 class Controller{
-  
+
   static getLogin(req,res){
     res.render('login',{title:"Login"})
   }
@@ -41,25 +41,17 @@ class Controller{
 
   }
   static getHomeHandler(req,res){
-    let category = {}
+    
     Item.findAll({})
     .then(data =>{
-      for(let i = 0; i < data.length; i++){
-        if(!category.data[i].item_category){
-          category.data[i].item_category = 0
-        }
-        else{
-          category.data[i].item_category++
-        }
-      };
 
-      res.render('home',{title:"Shopiii Online Shop", data ,category})
+      res.render('home',{title:"Shopiii Online Shop", data })
     })
   }
   static getUpdateUser(req, res) {
     User.findOne({
-      where: {
-        id: req.params.id
+      where:{
+        id:req.session.id
       }
     })
       .then(data => {
@@ -79,9 +71,9 @@ class Controller{
       user_nickname: updateInfo.user_nickname,
       user_address: updateInfo.user_address,
       phone_number: updateInfo.phone_number
-    }, {
-      where: {
-        id: req.params.id
+    },{
+      where:{
+        id: req.session.id
       }
     })
       .then(data => {
@@ -147,8 +139,8 @@ class Controller{
       }
     }).then(data => {
       let addCart = {
-        status_order: 'Pending',
-        UserId: req.params.id,
+        status_order:'Pending',
+        UserId:req.session.id,
         ItemId: req.body.id,
         qty: req.body.qty,
         total_price: (Number(data.price) * Number(req.body.qty)),
@@ -168,13 +160,13 @@ class Controller{
   static getOrderListHandler(req, res) {
     // res.send('hai hai')
     Cart.findAll({
-      where: {
-        UserId: 1,
+      where:{
+        UserId: req.session.id,
         status_order: 'Confirmed'
       },
       include: Item
     }).then((data) => {
-      //res.send(data)
+      res.render('orderlist', {data})
     })
       .catch((err) => {
         res.send('err : ' + err)
