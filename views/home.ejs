@@ -30,6 +30,7 @@
             <th>Category</th>
             <th>description</th>
             <th>stock</th>
+            <th>buy</th>
         </tr>
         <% for (let i = 0;i<data.length;i++) { %>
         <tr>
@@ -38,7 +39,7 @@
             <td><%= data[i].item_category %></td>
             <td><%= data[i].description %></td>
             <td><%= data[i].stock %></td>
-            
+            <td><button onclick="buyItem('<% data[i].id%>')" id="buy" > Buy </button></td>
 
             </button></td>
         </tr>
