@@ -39,9 +39,6 @@ class Controller{
       res.send(err)
     })
   }
-  static logout(req,res){
-
-  }
   static getHomeHandler(req,res){
     let category = {}
     Item.findAll({})
