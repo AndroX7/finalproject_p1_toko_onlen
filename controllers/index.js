@@ -2,7 +2,7 @@ const { User,Cart,Item } = require('../models')
 const { Op } = require("sequelize");
 
 class Controller{
-  
+
   static getLogin(req,res){
     res.render('login',{title:"Login"})
   }
@@ -59,7 +59,7 @@ class Controller{
   static getUpdateUser(req,res){
     User.findOne({
       where:{
-        id:req.params.id
+        id:req.session.id
       }
     })
     .then(data =>{
@@ -81,7 +81,7 @@ class Controller{
       phone_number: updateInfo.phone_number
     },{
       where:{
-        id: req.params.id
+        id: req.session.id
       }
     })
     .then(data =>{
@@ -161,7 +161,7 @@ class Controller{
     }).then(data =>{
       let addCart = {
         status_order:'Pending',
-        UserId:req.params.id,
+        UserId:req.session.id,
         ItemId: req.body.id,
         qty: req.body.qty,
         total_price: (Number(data.price) * Number(req.body.qty)),
@@ -182,7 +182,7 @@ class Controller{
     // res.send('hai hai')
     Cart.findAll({
       where:{
-        UserId: 1,
+        UserId: req.session.id,
         status_order: 'Confirmed'
       },
       include:Item
