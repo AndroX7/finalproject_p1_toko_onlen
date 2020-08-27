@@ -5,7 +5,11 @@ class Controller{
   static getHomeHandler(req,res){
     Item.findAll({})
     .then(data =>{
+      console.log(data)
       res.render('home',{title:"Shopiii Online Shop", data })
+    })
+    .catch(err=>{
+      res.send(err)
     })
   }
   static getRegisterUser(req,res){
@@ -42,6 +46,9 @@ class Controller{
     .catch((err) =>[
       res.send('err : ' + err)
     ])
+  }
+  static getLoginHandler(req,res){
+    res.render('login')
   }
 }
 

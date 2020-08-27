@@ -1,0 +1,23 @@
+[
+    {
+        "item_name":"sweater",
+        "item_price":"50000",
+        "item_category":"fashion",
+        "description":"mantap",
+        "stock":5
+    },
+    {
+        "item_name":"sunsilk",
+        "item_price":"60000",
+        "item_category":"kesehatan",
+        "description":"mantap",
+        "stock":5
+    },
+    {
+        "item_name":"lifeboy",
+        "item_price":"3000",
+        "item_category":"kesehatan",
+        "description":"mantap",
+        "stock":5
+    }
+]
