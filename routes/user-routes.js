@@ -7,6 +7,6 @@ router.get('/register',Controller.getRegisterUser)
 router.post('/register',Controller.postRegisterUser)
 // router.get('/userUpdate/:id',Controller.getUpdateUser)
 // router.post('/userUpdate/:id',Controller.postUpdateUser)
-router
+router.get('/login', Controller.getLoginHandler)
 
 module.exports = router

@@ -17,8 +17,10 @@
   },
   "homepage": "https://github.com/claudiovivaldi12/finalproject_p1_toko_onlen#readme",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
     "invoice-generator": "^0.3.0",
     "nodemon": "^2.0.4",
     "pdf-invoice": "^1.0.2",
