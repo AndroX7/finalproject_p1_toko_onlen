@@ -79,6 +79,19 @@ class Controller{
       res.send(err)
     })
   }
+  static getCancelOrder(req,res){
+    Cart.destroy({
+      where:{
+        id:req.params.id
+      }
+    })
+    .then(data =>{
+      res.redirect('') // balik ke halaman order list
+    })
+    .catch((err) =>{
+      res.send(err)
+    })
+  }
   static buyItem(req,res){
     Item.findOne({
       where:{
