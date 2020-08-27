@@ -17,7 +17,6 @@ class Controller{
       })
   }
   static postLogin(req,res){
-    let
     User.findOne({
       where:{
         username: req.body.username,
