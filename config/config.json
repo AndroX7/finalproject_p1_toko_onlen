@@ -1,9 +1,9 @@
 {
   "development": {
     "username": "postgres",
-    "password": "postgres",
-    "database": "toko_online",
-    "host": "127.0.0.1",
+    "password": "12345",
+    "database": "toko_onlen",
+    "host": "localhost",
     "dialect": "postgres"
   },
   "test": {

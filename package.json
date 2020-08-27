@@ -27,5 +27,9 @@
     "pdf-invoice": "^1.0.2",
     "pg": "^8.3.3",
     "sequelize": "^6.3.4"
-  }
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.2.0"
+  },
+  "keywords": []
 }

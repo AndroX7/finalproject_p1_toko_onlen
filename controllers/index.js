@@ -1,4 +1,4 @@
-const { User,Cart,Item } = require('../models')
+const { User, Cart, Item } = require('../models')
 const { Op } = require("sequelize");
 const { bcrypt } = require('bcrpytjs')
 class Controller{
@@ -17,7 +17,6 @@ class Controller{
       })
   }
   static postLogin(req,res){
-    let
     User.findOne({
       where:{
         username: req.body.username
@@ -46,35 +45,27 @@ class Controller{
     })
   }
   static getHomeHandler(req,res){
-    let category = {}
+    
     Item.findAll({})
     .then(data =>{
-      for(let i = 0; i < data.length; i++){
-        if(!category.data[i].item_category){
-          category.data[i].item_category = 0
-        }
-        else{
-          category.data[i].item_category++
-        }
-      };
 
-      res.render('home',{title:"Shopiii Online Shop", data ,category})
+      res.render('home',{title:"Shopiii Online Shop", data })
     })
   }
-  static getUpdateUser(req,res){
+  static getUpdateUser(req, res) {
     User.findOne({
       where:{
         id:req.session.id
       }
     })
-    .then(data =>{
-      res.render('edit-info',{title:"Edit Profile", data })
-    })
-    .catch((err) =>{
-      res.send(err)
-    })
+      .then(data => {
+        res.render('edit-info', { title: "Edit Profile", data })
+      })
+      .catch((err) => {
+        res.send(err)
+      })
   }
-  static postUpdateUser(req,res){
+  static postUpdateUser(req, res) {
     let updateInfo = req.body
     updateInfo.updatedAt = new Date()
     User.update({
@@ -89,81 +80,68 @@ class Controller{
         id: req.session.id
       }
     })
-    .then(data =>{
-      res.redirect('')
-    })
-    .catch((err) =>{
-      res.send(err)
-    })
+      .then(data => {
+        res.redirect('')
+      })
+      .catch((err) => {
+        res.send(err)
+      })
   }
-  static getRegisterUser(req,res){
-    res.render("register-user",{title:"Register User"})
+  static getRegisterUser(req, res) {
+    res.render("register-user", { title: "Register User" })
   }
-  static postRegisterUser(req,res){
+  static postRegisterUser(req, res) {
     let userInput = req.body
-      userInput.createdAt = new Date()
-      userInput.updatedAt = new Date()
+    userInput.createdAt = new Date()
+    userInput.updatedAt = new Date()
     User.create(userInput)
-    .then(data =>{
-      res.redirect('login')
-    })
-    .catch((err) =>{
-      res.send(err)
-    })
+      .then(data => {
+        res.redirect('login')
+      })
+      .catch((err) => {
+        res.send(err)
+      })
   }
-  static getSelectByCategory(req,res){
-    Item.findAll({
-      where:{
-        item_category: req.params.item_category
-      }
-    })
-    .then(data =>{
-      res.render('show-categories', { title: `Item List` , data})
-    })
-    .catch((err) =>{
-      res.send(err)
-    })
-  }
-  static getCheckoutHandler(req,res){
+  static getCheckoutHandler(req, res) {
     Cart.findAll({
-      where:{
-        id:req.params.id
-      }
-      include:Item
-    }).then(data =>{
+      where: {
+        id: req.params.id
+      },
+      include: Item
+    }).then(data => {
       data.status_order = 'true'
-      return Cart.update({status_order: data.status_order},{
-        where:{
-          id:req.params.id
+      return Cart.update({ status_order: data.status_order }, {
+        where: {
+          id: req.params.id
         }
       })
     })
-    .then( data => {
-      res.redirect('orderList',{title: "History Order", data })
-    })
-    .catch((err) =>{
-      res.send(err)
-    })
+      .then(data => {
+        res.redirect('orderList', { title: "History Order", data })
+      })
+      .catch((err) => {
+        res.send(err)
+      })
   }
-  static getCancelOrder(req,res){
+  static getCancelOrder(req, res) {
     Cart.destroy({
-      where:{
-        id:req.params.id
+      where: {
+        id: req.params.id
       }
     })
-    .then(data =>{
-      res.redirect('') // balik ke halaman order list
-    })
-    .catch((err) =>{
-      res.send(err)
-    })
+      .then(data => {
+        res.redirect('') // balik ke halaman order list
+      })
+      .catch((err) => {
+        res.send(err)
+      })
   }
-  static buyItem(req,res){
+  static buyItem(req, res) {
     Item.findOne({
-      where:{
-        id:req.body.id
+      where: {
+        id: req.body.id
       }
-    }).then(data =>{
+    }).then(data => {
       let addCart = {
         status_order:'Pending',
         UserId:req.session.id,
@@ -176,27 +154,48 @@ class Controller{
       }
       return Cart.create(addCart)
     })
-    .then(data =>{
-      res.redirect('') // balik ke list order
-    })
-    .catch((err) =>{
-      res.send(err)
-    })
+      .then(data => {
+        res.redirect('') // balik ke list order
+      })
+      .catch((err) => {
+        res.send(err)
+      })
   }
-  static getOrderListHandler(req,res){
+  static getOrderListHandler(req, res) {
     // res.send('hai hai')
     Cart.findAll({
       where:{
         UserId: req.session.id,
         status_order: 'Confirmed'
       },
-      include:Item
-    }).then((data) =>{
-      //res.send(data)
+      include: Item
+    }).then((data) => {
+      res.render('orderlist', {data})
     })
-    .catch((err) =>{
-      res.send('err : ' + err)
+      .catch((err) => {
+        res.send('err : ' + err)
+      })
+  }
+  static getLogin(req, res) {
+    User.findOne({
+      where: {
+        username: req.body.username,
+      }
+    }).then(data => {
+      if (data.username == req.body.username && data.user_password == req.body.user_password) {
+        req.session.isLogin = true
+        req.session.id = data.id
+        return Item.findAll()
+      }
+      else {
+        res.redirect('login')
+      }
+    }).then(data => {
+      res.redirect('home')
     })
+      .catch((err) => {
+        res.send(err)
+      })
   }
 }
 

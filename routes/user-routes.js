@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const Controller = require('../controllers/index.js)
+const Controller = require('../controllers/index.js')
 
 router.get('/login',Controller.getLogin)
 router.post('/login',Controller.postLogin)
