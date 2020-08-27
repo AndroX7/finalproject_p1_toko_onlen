@@ -128,9 +128,9 @@ class Controller{
     }).then((data) =>{
       //res.send(data)
     })
-    .catch((err) =>[
+    .catch((err) =>{
       res.send('err : ' + err)
-    ])
+    })
   }
 }
 
