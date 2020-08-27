@@ -1,6 +1,6 @@
 const { User,Cart,Item } = require('../models')
 const { Op } = require("sequelize");
-
+const { bcrypt } = require('bcrpytjs')
 class Controller{
 
   static getLogin(req,res){
@@ -20,20 +20,26 @@ class Controller{
     let
     User.findOne({
       where:{
-        username: req.body.username,
-        user_password: req.body.user_password
+        username: req.body.username
       }
     }).then(data =>{
       if(data == null){
         res.redirect('/login')
       }
       else{
-        req.session.isLogin = true
-        req.session.id = data.id
-        return home.findAll({})
+        bcrypt.compare(req.body.user_password,data.user_password)
+        .then(result =>{
+          if(result == false){
+            res.redirect('/login')
+          }
+          else{
+            Item.findAll({})
+            .then(data =>{
+              res.redirect('home',{title:"Welcome to Shopiii", data, id:req.session.id})
+            })
+          }
+        })
       }
-    }).then(data =>{
-      res.redirect('home',{title:"Welcome to Shopiii", data, id:req.session.id})
     })
     .catch((err) =>{
       res.send(err)
