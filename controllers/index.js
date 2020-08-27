@@ -17,21 +17,23 @@ class Controller{
       })
   }
   static postLogin(req,res){
+    let
     User.findOne({
       where:{
         username: req.body.username,
+        user_password: req.body.user_password
       }
     }).then(data =>{
-      if(data.username == req.body.username && data.user_password == req.body.user_password){
-        req.session.isLogin = true
-        req.session.id = data.id
-        return Item.findAll()
+      if(data == null){
+        res.redirect('/login')
       }
       else{
-        res.redirect('login')
+        req.session.isLogin = true
+        req.session.id = data.id
+        return home.findAll({})
       }
     }).then(data =>{
-      res.redirect('home')
+      res.redirect('home',{title:"Welcome to Shopiii", data, id:req.session.id})
     })
     .catch((err) =>{
       res.send(err)
