@@ -2,10 +2,58 @@ const { User,Cart,Item } = require('../models')
 const { Op } = require("sequelize");
 
 class Controller{
+  
+  static getLogin(req,res){
+    res.render('login',{title:"Login"})
+  }
+
+  static getLogout(req,res){
+    req.session.destroy(err=>{
+            if(err){
+                res.send(err)
+            }
+
+            res.redirect('/')
+      })
+  }
+  static postLogin(req,res){
+    User.findOne({
+      where:{
+        username: req.body.username,
+      }
+    }).then(data =>{
+      if(data.username == req.body.username && data.user_password == req.body.user_password){
+        req.session.isLogin = true
+        req.session.id = data.id
+        return Item.findAll()
+      }
+      else{
+        res.redirect('login')
+      }
+    }).then(data =>{
+      res.redirect('home')
+    })
+    .catch((err) =>{
+      res.send(err)
+    })
+  }
+  static logout(req,res){
+
+  }
   static getHomeHandler(req,res){
+    let category = {}
     Item.findAll({})
     .then(data =>{
-      res.render('home',{title:"Shopiii Online Shop", data })
+      for(let i = 0; i < data.length; i++){
+        if(!category.data[i].item_category){
+          category.data[i].item_category = 0
+        }
+        else{
+          category.data[i].item_category++
+        }
+      };
+
+      res.render('home',{title:"Shopiii Online Shop", data ,category})
     })
   }
   static getUpdateUser(req,res){
