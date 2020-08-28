@@ -1,17 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        table, th, td {
+          border: 1px solid black;
+        }
+
+        th, td {
+          padding: 10px;
+        }
+        </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> </title>
+</head>
+
 <body>
-  <div class="navbar">
-    <a href="/">Home</a>
-    <a href="/user/register">register</a>
-    <div class="dropdown">
-      <button class="dropbtn">Genre
-        <i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-content">
-        <% for(let cats in category){ %>
-        <a href="/features/categories/<%= cats %>"><%= cats %></a>
-        <% } %>
-      </div>
-      <a href="/user/login">login</a>
-      <a href="/">Profile</a>
+    <div>
+        <%- include('./partials/navbar.ejs') %>
     </div>
+
+    <h1>Selamat datang di Shopiii online shop</h1>
+    <h2>List Item</h2><br>
+    <table >
+        <tr>
+            <th>Item</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>description</th>
+            <th>stock</th>
+            <th>buy</th>
+        </tr>
+        <% for (let i = 0;i<data.length;i++) { %>
+        <tr>
+            <td><%= data[i].item_name %></td>
+            <td><%= data[i].item_price %></td>
+            <td><%= data[i].item_category %></td>
+            <td><%= data[i].description %></td>
+            <td><%= data[i].stock %></td>
+            <td><button onclick="buyItem('<% data[i].id%>')" id="buy" > Buy </button></td>
+            </button></td>
+        </tr>
+        <% } %>
+    </table>
 </body>
+
+</html>

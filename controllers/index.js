@@ -1,6 +1,8 @@
 const { User,Cart,Item } = require('../models')
 const { Op } = require("sequelize");
-const { bcrypt } = require('bcrpytjs')
+const bcrypt = require('bcryptjs')
+const saltRounds = 10
+
 class Controller{
 
   static getLogin(req,res){
@@ -17,25 +19,28 @@ class Controller{
       })
   }
   static postLogin(req,res){
-    let
     User.findOne({
       where:{
         username: req.body.username
       }
     }).then(data =>{
       if(data == null){
-        res.redirect('/login')
+        res.redirect('/user/login')
       }
       else{
         bcrypt.compare(req.body.user_password,data.user_password)
         .then(result =>{
           if(result == false){
-            res.redirect('/login')
+            res.redirect('/user/login')
           }
           else{
             Item.findAll({})
             .then(data =>{
-              res.redirect('home',{title:"Welcome to Shopiii", data, id:req.session.id})
+              // let id = req.session.id
+              req.session.user_id = data.id
+              req.isLogin = true
+              console.log(result.id)
+              res.render('home',{title:"Welcome to Shopiii", data, user_id: req.session.user_id ,isLogin:req.session.isLogin})
             })
           }
         })
@@ -46,19 +51,9 @@ class Controller{
     })
   }
   static getHomeHandler(req,res){
-    let category = {}
     Item.findAll({})
     .then(data =>{
-      for(let i = 0; i < data.length; i++){
-        if(!category.data[i].item_category){
-          category.data[i].item_category = 0
-        }
-        else{
-          category.data[i].item_category++
-        }
-      };
-
-      res.render('home',{title:"Shopiii Online Shop", data ,category})
+      res.render('home',{title:"Shopiii Online Shop", data})
     })
   }
   static getUpdateUser(req,res){
@@ -74,6 +69,7 @@ class Controller{
       res.send(err)
     })
   }
+  //res.send('error : ' + err)
   static postUpdateUser(req,res){
     let updateInfo = req.body
     updateInfo.updatedAt = new Date()
@@ -100,16 +96,26 @@ class Controller{
     res.render("register-user",{title:"Register User"})
   }
   static postRegisterUser(req,res){
-    let userInput = req.body
-      userInput.createdAt = new Date()
-      userInput.updatedAt = new Date()
-    User.create(userInput)
-    .then(data =>{
-      res.redirect('login')
-    })
-    .catch((err) =>{
-      res.send(err)
-    })
+    let inputUser = req.body
+    inputUser.createdAt = new Date()
+    inputUser.updatedAt = new Date()
+    bcrypt.hash(inputUser.user_password,saltRounds,(err,result)=>{
+      if(err){
+          res.send('err : ' + err)
+      }
+      else{
+
+        inputUser.user_password = result
+        console.log(result);
+        User.create(inputUser)
+        .then(()=>{
+        res.redirect('/user/login')
+        })
+        .catch((err) =>{
+            res.send(err)
+          })
+        }
+      })
   }
   static getSelectByCategory(req,res){
     Item.findAll({
@@ -128,7 +134,7 @@ class Controller{
     Cart.findAll({
       where:{
         id:req.params.id
-      }
+      },
       include:Item
     }).then(data =>{
       data.status_order = 'true'
@@ -187,12 +193,12 @@ class Controller{
     // res.send('hai hai')
     Cart.findAll({
       where:{
-        UserId: req.session.id,
+        UserId: 12,
         status_order: 'Confirmed'
       },
       include:Item
     }).then((data) =>{
-      //res.send(data)
+      res.send(data)
     })
     .catch((err) =>{
       res.send('err : ' + err)

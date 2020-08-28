@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <%- include ('./partials/navbar.ejs') %>
+    <h1>Register user</h1>
+
+    <form action="/user/register" method="POST">
+        <label for="username">Username</label><br>
+        <input type="text" name="username" id="username" value = ""><br><br>
+        <label for="user_password">Password</label><br>
+        <input type="password" name="user_password" id="user_password" value = ""><br><br>
+        <label for="email">Email</label><br>
+        <input type="text" name="email" id="email" value = ""><br><br>
+        <label for="user_nickname">Nickname</label><br>
+        <input type="text" name="user_nickname" id="user_nickname" value = ""><br><br>
+        <label for="user_addres">Full Addres</label><br>
+        <input size="40" type="text" name="user_address" id="user_address" value = ""><br><br>
+        <label for="phone_number">Phone Number</label><br>
+        <input type="text" name="phone_number" id="phone_number" value = ""><br><br>
+        <button type="submit" value="submit"> Register </button>
+    </form>
+</body>
+</html>
